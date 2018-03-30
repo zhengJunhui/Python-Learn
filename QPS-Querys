@@ -13,10 +13,12 @@ for i in range(5):
     time.sleep(1)
     result = cursor.fetchall()
     qlist.append(result[0][1])
-    diffqlist.append(int(result[0][1])-int(qlist[-1]))
-    print 	"QPS:",result[0][1]
-
+for i in range(4):
+    diffqlist.append(int(qlist[i]) - int(qlist[i + 1]))
+    abs(diffqlist)
 print qlist
 print diffqlist
 conn.close()
+
+
 
