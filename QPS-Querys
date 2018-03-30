@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import MySQLdb
+import time
+#conn = mdb.connect(host='127.0.0.1', port=3306, user='root', passwd='root', db='test', charset='utf8')
+conn = MySQLdb.connect('localhost','root','123456')
+cursor = conn.cursor()
+sql ='show  global  status like "question%"'
+qlist = []
+diffqlist = []
+for i in range(5):
+    count = cursor.execute(sql)
+    time.sleep(1)
+    result = cursor.fetchall()
+    qlist.append(result[0][1])
+    diffqlist.append(int(result[0][1])-int(qlist[-1]))
+    print 	"QPS:",result[0][1]
+
+print qlist
+print diffqlist
+conn.close()
+
