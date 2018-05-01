@@ -1,16 +1,42 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import requests
 import sys
+import time
+from bs4 import BeautifulSoup
+
+
 base_domin='http://mm131.com/xinggan/'
 
-for i in range(10000):
-         if i < 100:
-            continue
-         urll=base_domin+str(i)+".html"
-         r = requests.get(urll)
-         if not r.status_code == 404:
-             print(r.status_code)
-         fo = open("xinggan.log", "a")
-         fo.write(str(r.status_code))
-         fo.write('\n')
-         fo.close()
+#def download():
+
+def getTargetDiv(url,myAttrs):
+    html=requests.get(url)
+    soup=BeautifulSoup(html)
+    div=soup.find_all('div', class_=myAttrs)
+
+    print(str(div))
+
+
+# def write_log(path,contents,url):
+#     writetime=time.strftime("%Y-%m-%d %H:%M", time.localtime())
+#     with open(path, 'a') as filew:
+#         filew.write(writetime+' '+url+' '+str(contents))
+#         filew.write('\n')
+# def man():
+#     for i in range(10000):
+#          if i < 1000:
+#             continue
+#          urll=base_domin+str(i)+".html"
+#          r = requests.get(urll)
+#          if not r.status_code == 404:
+#              print(urll,r.status_code)
+#              print("got a cod 200 url",urll)
+#              txtt=getTargetDiv(urll,'content')
+#              print(txtt)
+#          elif r.status_code == 404:
+#              write_log('aa.log',str(r.status_code),urll)
+
+
+if __name__ == '__main__':
+    getTargetDiv('http://www.mm131.com/xinggan/1011.html','content')
