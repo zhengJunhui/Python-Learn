@@ -8,7 +8,6 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 
-
 def download(url,path,pageNumber,ref):
   if not os.path.exists(path):
     print ('文件夹', path, '不存在，重新建立')
@@ -17,7 +16,7 @@ def download(url,path,pageNumber,ref):
     for i in range(1,int(pageNumber)+1):
         print(newUrl+str(i)+'.jpg')
         opener = urllib.request.build_opener()
-        opener.addheaders = [('Referer',ref ),('User-Agent',heads('UserAgent'))]
+        opener.addheaders = [('Referer',ref),('User-Agent',heads('UserAgent'))]
         urllib.request.install_opener(opener)
         urllib.request.urlretrieve(newUrl+str(i)+'.jpg',path+str(i)+'.jpg')
         print('下载完成'+str(i)+'jpg')
