@@ -25,7 +25,6 @@ def getTargetDiv(url,Myattrs):
     soup = BeautifulSoup(html,"html.parser")
     title = soup.find_all({"h2","h3","h4","h5","h6"})
     txttitle = title[0].text                                    #获取纯文本标题内容
-#    div = soup.find_all('div', attrs={'class':Myattrs})
     div = soup.find_all('div', attrs={'class':'content-pic'})
     span =soup.find_all('span',attrs={'class':'page-ch'})       #获取图片页数html页面
     pattern = re.compile(r'\d+').findall(str(span[0]))          #获取图片总页数列表
