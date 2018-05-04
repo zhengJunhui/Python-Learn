@@ -10,17 +10,21 @@ from bs4 import BeautifulSoup
 
 
 
-def download(url,path,filename):
+def download(url,path,pageNumber):
   if not os.path.exists(path):
     print ('文件夹', path, '不存在，重新建立')
     os.makedirs(path)
-    opener = urllib.request.build_opener()
-    opener.addheaders = [('Referer', heads('reFereR')),('User-Agent',heads('UserAgent'))]
-    urllib.request.install_opener(opener)
-    urllib.request.urlretrieve(url,path+filename)
+#    strUrl = url
+    newUrl = url.split('1.jpg')[0]
+    for i in range(1,int(pageNumber)+1):
+        print(newUrl+str(i)+'.jpg')
+        opener = urllib.request.build_opener()
+        opener.addheaders = [('Referer', heads('reFereR')),('User-Agent',heads('UserAgent'))]
+        urllib.request.install_opener(opener)
+        urllib.request.urlretrieve(newUrl+str(i)+'.jpg',path+str(i)+'.jpg')
+        print('下载完成'+str(i)+'jpg')
 
-
-def getTargetDiv(url,Myattrs):
+def getTargetDiv(url):
     html = urllib.request.urlopen(url).read()
     soup = BeautifulSoup(html,"html.parser")
     title = soup.find_all({"h2","h3","h4","h5","h6"})
@@ -28,11 +32,11 @@ def getTargetDiv(url,Myattrs):
     div = soup.find_all('div', attrs={'class':'content-pic'})
     span =soup.find_all('span',attrs={'class':'page-ch'})       #获取图片页数html页面
     pattern = re.compile(r'\d+').findall(str(span[0]))          #获取图片总页数列表
-    print(pattern[0])
+    pageNumber = pattern[0]
     for i in div:
         getType = i.find('img')
         pic_link = getType.get('src')
-    return txttitle,pic_link
+    return txttitle,pic_link,pageNumber
 
 
 def write_log(path,contents,url):
@@ -57,9 +61,8 @@ def man():
          if not r.status_code == 404:
              print(urll,r.status_code)
              print("got a cod 200 url",urll)
-             txtt = getTargetDiv(urll,'content')
-             print(txtt)
-             download(txtt[1],'D:\mm131\\xinggan\\'+txtt[0],'\\111.jpg')
+             txtt = getTargetDiv(urll)
+             download(txtt[1],'D:\mm131\\xinggan\\'+txtt[0]+'\\',txtt[2])
          elif r.status_code == 404:
              write_log('aa.log',str(r.status_code),urll)
 
