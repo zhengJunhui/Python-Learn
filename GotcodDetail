@@ -1,0 +1,18 @@
+# -*- coding:UTF-8 -*-
+import string
+import os
+import random
+
+def getPicInfo(readPath):
+    typelist = ["旗袍","性感"]
+    for i in typelist:
+        gettypeDetail = os.listdir(readPath+i) #读取分类下的目录名列表
+        print(gettypeDetail)
+        if len(gettypeDetail) == 0:
+            print(readPath+i+" 是空目录")
+            continue
+            for root, = os.walk(readPath+i)
+            #print(getimageName)
+
+
+getPicInfo('D:\\text\\')
