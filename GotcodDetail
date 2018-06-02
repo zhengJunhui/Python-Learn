@@ -1,18 +1,42 @@
 # -*- coding:UTF-8 -*-
 import string
 import os
-import random
+from PIL import Image
+import json
 
 def getPicInfo(readPath):
+    detailList = []
     typelist = ["旗袍","性感"]
     for i in typelist:
         gettypeDetail = os.listdir(readPath+i) #读取分类下的目录名列表
-        print(gettypeDetail)
         if len(gettypeDetail) == 0:
-            print(readPath+i+" 是空目录")
             continue
-            for root, = os.walk(readPath+i)
-            #print(getimageName)
+        for ii in gettypeDetail:
+            for root, dirs, files in  os.walk(readPath+i+'\\'+ii):
+                for name in files:
+                    smalList = []
+                    filepath = os.path.join(root, name)
+                    #print(os.path.split(filepath))
+                    smalList.append(filepath.split("\\")[-3])
+                    smalList.append(filepath.split("\\")[-2])
+                    smalList.append(filepath.split("\\")[-1])
+                    smalList.append(getPicAttributes(filepath))
+                    detailList.append(smalList)
+    print(detailList)
+    return detailList
 
 
-getPicInfo('D:\\text\\')
+def bianli(ll):
+    for i in ll:
+        print('分类：'+i[0])
+        print('文章名称：' + i[1])
+
+def getPicAttributes(picPath):
+    img = Image.open(picPath)
+    imgSize = img.size
+    return imgSize
+
+
+
+#getPicInfo('D:\\text\\')
+bianli(getPicInfo('D:\\text\\'))
