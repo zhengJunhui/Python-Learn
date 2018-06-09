@@ -1,30 +1,31 @@
-#!/usr/bin/python
+#/usr/bin/python
 import os
 from PIL import Image
 import smtplib
 from email.header import Header
+from email.utils import formataddr
 from email.mime.text import MIMEText
 
-mail_host = "smtp.qq.com"        # smtp 服务器
-mail_user = "*******@gmail.com"  # smtp 服务器验证用户名
-mail_password = "******"         # smtp 服务器验证密码(smtp 授权码)
-sender = "************"          # 发送地址
-receivers = ["**************"]   # 接收地址
+mail_host = "smtp.qq.com"
+mail_user = "***********"
+mail_password = "*********"
+sender = "*******"
+receivers = "********"
 
-def send_mail():
-    message = MIMEText("Hello world", "plain", "utf-8")
-    message["From"] = Header("assad", "utf-8")
-    message["To"] = Header("Mr.lin", "utf-8")
-    message["Subject"] = Header("python smtp 邮件测试", "utf-8")
+def send_mail(Contents):
+    message = MIMEText(Contents, 'plain', 'utf-8')
+    message['From'] = formataddr(['',mail_user])
+    message['To'] = formataddr(['',receivers])
+    message["Subject"] = Header("11111 邮件测试", "utf-8")
     try:
-        server = smtplib.SMTP()  # 创建 SMTP 对象
-        server.connect(mail_host, 465)  # 连接 smtp 服务器，默认端口25
-        server.login(mail_user, mail_password)  # 登陆 smtp 服务器
-        server.sendmail(sender, receivers, message.as_string())  # 发送邮件
+        server = smtplib.SMTP_SSL(mail_host,465)
+        server.login(mail_user,mail_password)
+        server.sendmail(sender,receivers,message.as_string())
+        server.quit()
         print("send email success")
     except smtplib.SMTPException as err:
         print("send email fail")
-        print("Error message:", err)
+        print("Error message:",err)
 
 def get(basedir,imgeId):
     type = ['哈哈哈','新建文件夹','呀呀呀']
@@ -45,11 +46,15 @@ def getatt(path):
     img = Image.open(path)
     imgSize = img.size
     return imgSize
-
+conn = '''我希望有个如你一般的人
+如山间清爽的风
+如古城温暖的光
+从清晨到夜晚
+由山野到书房
+只要最后是你
+就好
+            ——张嘉佳 《从你的全世界路过》'''
 if __name__ == '__main__':
     get("D:\\text\\", 0)
-    send_mail()
-
-
-
+    send_mail(conn)
 
