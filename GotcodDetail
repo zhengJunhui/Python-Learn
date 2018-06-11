@@ -53,8 +53,8 @@ def get(basedir,imgeId):
                     Imgtuple = getatt(root+'\\'+name)
                     imgCode = '''<img src="http://img.pargirl.com/%s/%s" width="%s" height="%s" class="alignnone size-full" />'''
                     print(imgCode%(imgeId,name,Imgtuple[0],Imgtuple[1]))
-                    aa = imgCode %(imgeId, name, Imgtuple[0], Imgtuple[1])
-                    tempFile(aa+"\n")
+                    imgCodeTxt = imgCode %(imgeId, name, Imgtuple[0], Imgtuple[1])
+                    tempFile(imgCodeTxt+"\n")
     with open('tmp.log','r') as ff:
      return   ff.read()
 
