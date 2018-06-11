@@ -7,16 +7,26 @@ from email.utils import formataddr
 from email.mime.text import MIMEText
 
 mail_host = "smtp.qq.com"
-mail_user = "***********"
+mail_user = "*******@qq.com"
 mail_password = "*********"
-sender = "*******"
-receivers = "********"
+sender = "*******@qq.com"
+receivers = "********@qq.com"
+
+def getatt(path):
+    img = Image.open(path)
+    imgSize = img.size
+    return imgSize
+
+def tempFile(contents):
+    with open('tmp.log','a') as f:
+        f.write(str(contents))
 
 def send_mail(Contents):
+
     message = MIMEText(Contents, 'plain', 'utf-8')
-    message['From'] = formataddr(['',mail_user])
-    message['To'] = formataddr(['',receivers])
-    message["Subject"] = Header("11111 邮件测试", "utf-8")
+    message['From'] = formataddr(['发件人昵称',mail_user])
+    message['To'] = formataddr(['收件人昵称',receivers])
+    message["Subject"] = Header("邮件测试", "utf-8")
     try:
         server = smtplib.SMTP_SSL(mail_host,465)
         server.login(mail_user,mail_password)
@@ -28,7 +38,8 @@ def send_mail(Contents):
         print("Error message:",err)
 
 def get(basedir,imgeId):
-    type = ['哈哈哈','新建文件夹','呀呀呀']
+
+    type = ['Directory1','Directory2','Directory3']
     for i in type:
         for ii in os.listdir(basedir+'\\'+i):
             for root, dirs, files in os.walk(basedir+i+"\\"+ii):
@@ -36,25 +47,18 @@ def get(basedir,imgeId):
                     if len(os.listdir(root)) == 0:
                         continue
                     print(root)
+                    tempFile(root + "\n")
                     imgeId = imgeId+1
                 for name in files:
                     Imgtuple = getatt(root+'\\'+name)
                     imgCode = '''<img src="http://img.pargirl.com/%s/%s" width="%s" height="%s" class="alignnone size-full" />'''
                     print(imgCode%(imgeId,name,Imgtuple[0],Imgtuple[1]))
+                    aa = imgCode %(imgeId, name, Imgtuple[0], Imgtuple[1])
+                    tempFile(aa+"\n")
+    with open('tmp.log','r') as ff:
+     return   ff.read()
 
-def getatt(path):
-    img = Image.open(path)
-    imgSize = img.size
-    return imgSize
-conn = '''我希望有个如你一般的人
-如山间清爽的风
-如古城温暖的光
-从清晨到夜晚
-由山野到书房
-只要最后是你
-就好
-            ——张嘉佳 《从你的全世界路过》'''
 if __name__ == '__main__':
-    get("D:\\text\\", 0)
-    send_mail(conn)
+    send_mail(get("D:\\text\\", 0))
+    os.remove('tmp.log')
 
